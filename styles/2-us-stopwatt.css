@@ -1,0 +1,632 @@
+@import url('theme.css');
+
+/* ============================================================
+   THEME: StopWatt
+   Source: https://stopwatt-eco.vercel.app/
+   Extracted: 2026-04-01
+   Theme type: Mixed (dark hero, light sections)
+   Niche: Energy/Home Efficiency
+   ============================================================ */
+
+/* ── LAYER 1: COLOR TOKENS ─────────────────────────────── */
+:root {
+  --primary:        #fbbf24 ; /* CTA button bg - Gold */
+  --primary-dark:   #f59e0b ; /* CTA button hover - Darker Gold */
+  --primary-light:  #fef3c7 ; /* badge/tag backgrounds - light gold tint */
+  --secondary:      #01244a ; /* section label pill bg - Navy */
+  --bg:             #ffffff ; /* page background */
+  --bg-alt:         #f8fafc ; /* alternating section bg */
+  --dark:           #01244a ; /* H1/H2 color - Navy */
+  --text:           #1e293b ; /* body text */
+  --text-muted:     #64748b ; /* captions/subtitles */
+  --cta-bg:         #fbbf24 ; /* CTA fill - Gold */
+  --cta-text:       #01244a ; /* text on CTA - Navy for contrast */
+  --alert-bg:       #01244a ; /* top bar bg - Navy */
+  --alert-text:     #ffffff ; /* top bar text - white */
+  --trust-bg:       #f8fafc ; /* trust section bg */
+  --border:         #e2e8f0 ; /* card/divider borders */
+  --star:           #fbbf24 ; /* star ratings */
+}
+
+/* ── LAYER 2: TYPOGRAPHY TOKENS ────────────────────────── */
+:root {
+  --font-heading:   'Poppins', sans-serif ; /* from Google Fonts link */
+  --font-body:      'Poppins', sans-serif ; /* same family for consistency */
+  --fw-heading:     700 ; /* h1 weight */
+  --fw-subheading:  600 ; /* h2/h3 weight */
+  --fw-body:        400 ; /* body text weight */
+  --lh-heading:     1.15 ; /* heading line-height */
+  --lh-body:        1.7 ; /* body line-height */
+  --fs-h1:          clamp(2rem, 4.5vw, 3.2rem) ; /* responsive h1 */
+  --fs-h2:          clamp(1.6rem, 3vw, 2.4rem) ; /* responsive h2 */
+}
+
+/* ── LAYER 3: HERO BACKGROUND ───────────────────────────── */
+#hero {
+  background: linear-gradient(135deg, #01244a 0%, #1e3a8a 40%, #01244a 100%);
+  position: relative;
+}
+
+/* Decorative gradient overlay on right side */
+#hero::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  background: linear-gradient(135deg, rgba(251,191,36,0.08) 0%, rgba(251,191,36,0.12) 100%);
+  clip-path: polygon(10% 0%, 100% 0%, 100% 100%, 0% 100%);
+  pointer-events: none;
+}
+
+/* ── LAYER 4: COMPONENT OVERRIDES ───────────────────────── */
+
+/* Alert bar */
+#alert-bar {
+  background: var(--alert-bg);
+  color: var(--alert-text);
+}
+.alert-badge i {
+  color: #4ade80; /* bright green for icons */
+}
+
+/* Desktop: ticker track = normal flex column (unchanged) */
+.alert-ticker-track {
+  display: contents; /* renders children as if track doesn't exist */
+}
+.mobile-duplicate {
+  display: none !important;
+}
+
+/* Mobile only: horizontal infinite scroll ticker */
+@media (max-width: 767px) {
+  .mobile-duplicate {
+    display: flex !important;
+  }
+  #announcement-bar {
+    overflow: hidden;
+    padding: 0;
+  }
+  .alert-badges {
+    overflow: hidden;
+    padding: 0;
+  }
+  .alert-ticker-track {
+    display: flex;
+    flex-direction: row;
+    width: max-content;
+    animation: alertTicker 28s linear infinite;
+    gap: 48px;
+    padding: 10px 0;
+  }
+  .alert-ticker-track .alert-badge {
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  @keyframes alertTicker {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+}
+
+/* Nav + footer logo — 56px */
+.nav-logo img,
+#header .nav-logo img,
+.footer-brand img,
+#footer .footer-brand img {
+  height: 56px !important;
+  width: auto !important;
+  max-height: 56px !important;
+  max-width: none !important;
+  display: block;
+}
+
+/* ── LANGUAGE SELECTOR ─────────────────────────── */
+.language-selector {
+  position: relative;
+  margin: 0 1rem;
+}
+
+.lang-toggle {
+  display: flex !important;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  transition: all 0.2s ease;
+}
+
+.lang-toggle:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.lang-toggle .flag {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.lang-toggle i {
+  font-size: 10px;
+  color: #64748b;
+  transition: transform 0.2s ease;
+}
+
+/* Dropdown */
+.lang-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  padding: 8px;
+  min-width: 140px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1000;
+}
+
+.language-selector:hover .lang-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.language-selector:hover .lang-toggle i {
+  transform: rotate(180deg);
+}
+
+.lang-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.lang-dropdown a:hover {
+  background: #f8fafc;
+  color: #3b82f6;
+}
+
+.lang-dropdown a.active {
+  background: #eff6ff;
+  color: #3b82f6;
+  font-weight: 600;
+}
+
+.lang-dropdown a .flag {
+  font-size: 1.4rem;
+}
+
+/* Mobile Tweak for Lang Selector */
+@media (max-width: 1024px) {
+  .language-selector {
+    margin: 0.5rem 0;
+  }
+}
+
+/* Navbar - light background matching hero */
+#header {
+  background: #ffffff;
+  border-bottom: 1px solid #e2e8f0;
+  box-shadow: 0 1px 8px rgba(22,163,74,0.08);
+}
+/* Nav links - dark text on white navbar */
+.nav-links a {
+  color: #1e293b;
+}
+.nav-links a:hover {
+  color: #16a34a;
+}
+
+/* Hero elements - white text on navy background */
+.hero-badge {
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.4);
+  color: #fbbf24;
+  white-space: nowrap !important;
+}
+.hero-text h1 {
+  color: #ffffff !important;
+}
+.hero-text h1 .highlight {
+  color: #fbbf24 !important;
+}
+.hero-subtext {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.hero-tagline {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+.hero-tagline i {
+  color: #fbbf24 !important;
+}
+/* Hero guarantee — inline layout, icon + text on same line */
+.hero-guarantee {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.7);
+  display: flex !important;
+  align-items: flex-start !important;
+  gap: 8px !important;
+  line-height: 1.6 !important;
+  max-width: 480px !important;
+}
+.hero-guarantee strong {
+  white-space: nowrap !important;
+}
+.hero-guarantee i {
+  color: #fbbf24 !important;
+  margin-top: 3px !important;
+  flex-shrink: 0 !important;
+}
+
+/* CTA Buttons - pill-shaped from reference */
+.btn-primary,
+.hero-cta,
+.cta-button {
+  background: var(--cta-bg);
+  color: var(--cta-text);
+  border-radius: 50px; /* pill shape */
+  padding: 16px 36px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(22,163,74,0.35);
+  transition: all 0.2s ease;
+  white-space: nowrap !important;
+}
+.btn-primary:hover,
+.hero-cta:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(22,163,74,0.4);
+}
+
+/* Section label pills */
+.section-label {
+  background: var(--secondary);
+  color: var(--primary);
+  border-radius: 50px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 5px 14px;
+}
+
+/* Cards - feature, review, benefit cards */
+.feature-card,
+.benefit-card,
+.review-card {
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+  border: 1px solid var(--border);
+}
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+  border-color: rgba(22,163,74,0.3);
+}
+
+/* Feature icon wrapper */
+.feature-icon-wrap {
+  background: var(--secondary);
+  border-radius: 12px;
+}
+.feature-icon-wrap i {
+  color: var(--primary);
+}
+
+/* Trust badges */
+.trust-icon {
+  background: var(--secondary);
+  border-radius: 50%;
+}
+.trust-icon i {
+  color: var(--primary);
+}
+
+/* Social proof section - gold background with navy text */
+#social-proof {
+  background: var(--primary);
+  color: var(--navy);
+  padding: 28px 0;
+}
+.stat-number {
+  color: var(--navy) !important;
+}
+.stat-label {
+  color: rgba(1, 36, 74, 0.8) !important;
+}
+.social-proof-grid {
+  flex-wrap: nowrap;
+}
+.stat-item {
+  padding: 8px 24px;
+}
+.stat-number {
+  font-size: clamp(1.3rem, 2.5vw, 1.9rem) !important;
+}
+.stat-label {
+  font-size: 0.78rem !important;
+}
+.stat-divider {
+  background: rgba(255,255,255,0.25);
+}
+
+/* FAQ styling */
+.faq-icon {
+  background: var(--secondary);
+}
+.faq-icon i {
+  color: var(--primary);
+}
+.faq-item.open .faq-icon {
+  background: var(--primary);
+}
+.faq-item.open .faq-icon i {
+  color: #fff;
+}
+
+/* Urgency badge in benefits */
+.urgency-badge {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  padding: 14px 20px;
+  border-radius: 50px;
+  margin-top: 32px;
+  margin-bottom: 32px;
+  line-height: 1.5;
+}
+.urgency-badge i {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* ── INFINITE REVIEWS MARQUEE ─────────────────────────── */
+.reviews-marquee-wrap {
+  overflow: hidden;
+  width: 100%;
+  margin-bottom: 48px;
+  mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+}
+/* Remove fade effect on mobile so text is not cut off */
+@media (max-width: 767px) {
+  .reviews-marquee-wrap {
+    mask-image: none !important;
+    -webkit-mask-image: none !important;
+  }
+}
+.reviews-track {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: reviewsScroll 45s linear infinite;
+}
+.reviews-track .review-card {
+  width: 320px;
+  flex-shrink: 0;
+  padding: 28px 24px;
+}
+@keyframes reviewsScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@media (max-width: 600px) {
+  .reviews-track .review-card { width: 280px; }
+}
+
+/* ── REVIEWS FORMATTING ─────────────────────────── */
+.review-card {
+  display: flex !important;
+  flex-direction: column;
+}
+
+.reviewer-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: auto; /* Push to bottom of card content */
+  margin-bottom: 8px;
+}
+
+.reviewer-location {
+  border-top: 1px solid #f1f5f9;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.reviewer-location i {
+  color: #22c55e;
+  margin-right: 6px;
+}
+
+.reviewer-location .savings-tag {
+  display: inline-block;
+  margin-top: 8px;
+  background: #f0fdf4;
+  color: #16a34a;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-weight: 700;
+  width: fit-content;
+}
+
+/* Footer - dark */
+#footer {
+  background: var(--dark);
+  color: rgba(255,255,255,0.72);
+  padding: 56px 0 32px;
+}
+.footer-inner {
+  gap: 40px;
+  margin-bottom: 36px;
+}
+.footer-brand p {
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.7;
+}
+.footer-distributor {
+  background: rgba(255,255,255,0.04);
+  border-left: 3px solid rgba(22,163,74,0.5);
+}
+.footer-contact i,
+.footer-col ul li a:hover {
+  color: #4ade80;
+}
+
+
+/* Review stars */
+.review-stars {
+  color: var(--star);
+}
+.reviews-stats {
+  background: var(--secondary);
+  border: 1px solid rgba(22,163,74,0.2);
+}
+.review-stat .number {
+  color: var(--primary);
+}
+
+/* ── LAYER 5: CONTRAST SAFETY CHECKS ────────────────────── */
+/*
+   Verify before saving:
+   [x] Navbar text is white on dark navbar background (readable)
+   [x] CTA button text (#fff) on --cta-bg (#16a34a) has 4.5:1+ ratio
+   [x] Modal text is ALWAYS dark (modals have white bg, text is --dark)
+   [x] Section labels: --primary (#16a34a) text on --secondary (#f0fdf4) is readable
+   [x] Hero text is white/light on dark hero gradient
+   [x] Trust badge text: --dark on --trust-bg is readable
+   [x] Social proof: white text on green background is readable
+*/
+
+/* ── LAYER 6: LOGO OVERRIDES ───────────────────────────── */
+
+/* Navbar logo - use white official logo */
+.nav-logo-text {
+  display: inline-block;
+  /* background-image: url('../images/logo-white.webp'); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  /* text-indent: -9999px; */
+  overflow: hidden;
+}
+
+/* Footer logo - use white official logo on dark background */
+.footer-logo-text {
+  display: inline-block;
+  /* background-image: url('../images/logo-white.webp'); */
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  /* text-indent: -9999px; */
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+/* Hero product image - light drop shadow on light bg */
+.hero-product-img {
+  filter: drop-shadow(0 16px 40px rgba(22,163,74,0.20)) drop-shadow(0 4px 12px rgba(0,0,0,0.10));
+  background: transparent !important;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Hero image column styling */
+.hero-img-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Benefits image styling */
+.benefits-img img {
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.15));
+  border-radius: 12px;
+}
+
+/* Science image styling */
+.science-img img {
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+}
+
+/* Review images - circular and smaller */
+.review-image {
+  margin-bottom: 12px;
+}
+.review-image img {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+/* ── LAYER 7: RESPONSIVE ADJUSTMENTS ────────────────────── */
+@media (max-width: 900px) {
+  #hero::after {
+    display: none; /* hide decorative gradient on mobile */
+  }
+  
+  .nav-logo-text {
+    width: 120px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .btn-primary,
+  .hero-cta {
+    padding: 14px 28px; /* slightly smaller on mobile */
+    font-size: 0.95rem;
+  }
+  
+  .nav-logo-text {
+    width: 100px;
+    height: 26px;
+  }
+  
+  .footer-logo-text {
+    width: 100px;
+    height: 26px;
+  }
+  .hero-badge {
+    font-size: 0.75rem !important;
+    padding: 6px 12px !important;
+  }
+}
